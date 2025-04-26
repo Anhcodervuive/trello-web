@@ -6,11 +6,11 @@ import App from './App.jsx'
 import theme from './theme.jsx'
 
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
+  <>
     <CssVarsProvider theme={theme}>
       {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
       <CssBaseline />
       <App />
     </CssVarsProvider>
-  </StrictMode>
+  </>
 )
