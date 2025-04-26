@@ -4,11 +4,28 @@ import Stack from '@mui/material/Stack';
 import { green } from '@mui/material/colors';
 import Icon from '@mui/material/Icon';
 import Typography from '@mui/material/Typography';
+import {
+  useColorScheme,
+} from '@mui/material/styles';
+
+function ModeToggle() {
+  const { mode, setMode } = useColorScheme();
+  return (
+    <Button
+      onClick={() => {
+        setMode(mode === 'light' ? 'dark' : 'light');
+      }}
+    >
+      {mode === 'light' ? 'Turn dark' : 'Turn light'}
+    </Button>
+  );
+}
 
 function App() {
 
   return (
     <>
+      <ModeToggle />
       <div>Du dep trai</div>
       <Typography variant="body2" component="h2" color="text.secondary" gutterBottom>
         h1. Heading
