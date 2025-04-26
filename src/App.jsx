@@ -3,13 +3,17 @@ import * as React from 'react';
 import Stack from '@mui/material/Stack';
 import { green } from '@mui/material/colors';
 import Icon from '@mui/material/Icon';
+import Typography from '@mui/material/Typography';
 
 function App() {
 
   return (
     <>
       <div>Du dep trai</div>
-      <Button variant="text">Text</Button>
+      <Typography variant="body2" component="h2" color="text.secondary" gutterBottom>
+        h1. Heading
+      </Typography>
+      <Button variant="text" color='secondary'>Text</Button>
       <Button variant="contained">Contained</Button>
       <Button variant="outlined">Outlined</Button>
       <Stack direction="row" spacing={3}>
