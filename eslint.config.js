@@ -2,13 +2,14 @@ import js from '@eslint/js';
 import globals from 'globals';
 import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
+import reactPlugin from 'eslint-plugin-react';
 
 export default [
   {
     ignores: ['dist'],
   },
   {
-    files: ['**/*.{js,jsx}'],
+    files: ['**/*.{js,jsx}', '**/_id.{js,jsx}'],
     languageOptions: {
       ecmaVersion: 2020,
       globals: globals.browser,
@@ -23,6 +24,12 @@ export default [
     plugins: {
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
+      react: reactPlugin,
+    },
+    settings: {
+      react: {
+        version: 'detect',
+      },
     },
     rules: {
       ...js.configs.recommended.rules,
@@ -43,6 +50,7 @@ export default [
       'react-hooks/exhaustive-deps': 'warn',
       'react/prop-types': 0,
       'react/display-name': 0,
+      'react/jsx-no-undef': 'error',
 
       'no-console': 1,
       'no-lonely-if': 1,
@@ -73,6 +81,7 @@ export default [
           allowMultiplePropertiesPerLine: false,
         },
       ],
+      'no-undef': 'error',
     },
   },
 ];
