@@ -23,14 +23,14 @@ function Profile() {
   return (
     <Box>
       <IconButton
-            onClick={handleClick}
-            size="small"
-            aria-controls={open ? 'account-menu' : undefined}
-            aria-haspopup="true"
-            aria-expanded={open ? 'true' : undefined}
-          >
-            <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
-        </IconButton>
+        onClick={handleClick}
+        size="small"
+        aria-controls={open ? 'account-menu' : undefined}
+        aria-haspopup="true"
+        aria-expanded={open ? 'true' : undefined}
+      >
+        <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
+      </IconButton>
       <Menu
         id="basic-menu-profile"
         anchorEl={anchorEl}
@@ -41,10 +41,18 @@ function Profile() {
         }
       >
         <MenuItem onClick={handleClose}>
-          <Avatar sx={{ width: '28px', height: '28px', mr: 1 }}/> Profile
+          <Avatar sx={
+            {
+              width: '28px', height: '28px', mr: 1
+            }
+          }/> Profile
         </MenuItem>
         <MenuItem onClick={handleClose}>
-          <Avatar sx={{ width: '28px', height: '28px', mr: 1 }}/> My account
+          <Avatar sx={
+            {
+              width: '28px', height: '28px', mr: 1
+            }
+          }/> My account
         </MenuItem>
         <Divider />
         <MenuItem onClick={handleClose}>
