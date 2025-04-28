@@ -1,15 +1,128 @@
 import Box from '@mui/material/Box';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import VpnLockIcon from '@mui/icons-material/VpnLock';
+import AddToDriveIcon from '@mui/icons-material/AddToDrive';
+import BoltIcon from '@mui/icons-material/Bolt';
+import FilterListIcon from '@mui/icons-material/FilterList';
+import Chip from '@mui/material/Chip';
+import Avatar from '@mui/material/Avatar';
+import AvatarGroup from '@mui/material/AvatarGroup';
+import Tooltip from '@mui/material/Tooltip';
+import Button from '@mui/material/Button';
+import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
+
+const MENU_STYLES = {
+  backgroundColor: 'white',
+  color: 'primary.main',
+  border: 'none',
+  paddingX: '5px',
+  borderRadius: '5px',
+  '& .MuiSvgIcon-root': { color: 'primary.main' },
+  '&:hover': { bgcolor: 'primary.100' }
+}
 
 function BoardBar() {
   return (
-    <Box sx={{
-      backgroundColor: 'primary.dark',
-      width: '100%',
-      height: theme => theme.trello.boardBarHeight,
-      display: 'flex',
-      alignItems: 'center'
-    }}>
-        Board bar
+    <Box
+      px={2}
+      sx={
+        {
+          width: '100%',
+          height: theme => theme.trello.boardBarHeight,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: 2,
+          overflowX: 'auto',
+          borderTop: 1,
+        }
+      }>
+      <Box sx={
+        {
+          display: 'flex',
+          alignItems: 'center',
+          gap: 2
+        }
+      }>
+        <Chip
+          sx={
+            MENU_STYLES
+          }
+          icon={<DashboardIcon />}
+          label="Do Thanh Du"
+          clickable
+        />
+        <Chip
+          sx={
+            MENU_STYLES
+          }
+          icon={<VpnLockIcon />}
+          label="Public/private workspace"
+          clickable
+        />
+        <Chip
+          sx={
+            MENU_STYLES
+          }
+          icon={<AddToDriveIcon />}
+          label="Add to google drive"
+          clickable
+        />
+        <Chip
+          sx={
+            MENU_STYLES
+          }
+          icon={<BoltIcon />}
+          label="Automation "
+          clickable
+        />
+        <Chip
+          sx={
+            MENU_STYLES
+          }
+          icon={<FilterListIcon />}
+          label="Filter "
+          clickable
+        />
+      </Box>
+      <Box sx={
+        {
+          display: 'flex',
+          alignItems: 'center',
+          gap: 2
+        }
+      }>
+        <Button variant="outlined" startIcon={<PersonAddAlt1Icon />}>Create</Button>
+        <AvatarGroup max={4} sx={
+          {
+            '& .MuiAvatar-root' : {
+              width: '30px',
+              height: '30px',
+              fontSize: '1rem',
+            }
+          }
+        }>
+          <Tooltip title="Remy Sharp" arrow>
+            <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+          </Tooltip>
+          <Tooltip title="Andy Yang" arrow>
+            <Avatar alt="Andy Yang" src="/static/images/avatar/1.jpg" />
+          </Tooltip>
+          <Tooltip title="Bai Lu" arrow>
+            <Avatar alt="Bai Lu" src="/static/images/avatar/1.jpg" />
+          </Tooltip>
+          <Tooltip title="Ao rui peng" arrow>
+            <Avatar alt="Ao rui peng" src="/static/images/avatar/1.jpg" />
+          </Tooltip>
+          <Tooltip title="Liu shi shi" arrow>
+            <Avatar alt="Liu shi shi" src="/static/images/avatar/1.jpg" />
+          </Tooltip>
+          {/* <Avatar alt="Travis Howard" src="/static/images/avatar/2.jpg" />
+          <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
+          <Avatar alt="Agnes Walker" src="/static/images/avatar/4.jpg" />
+          <Avatar alt="Trevor Henderson" src="/static/images/avatar/5.jpg" /> */}
+        </AvatarGroup>
+      </Box>
     </Box>
   );
 }
