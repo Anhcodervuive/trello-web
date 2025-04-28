@@ -5,9 +5,7 @@ import reactRefresh from 'eslint-plugin-react-refresh';
 import reactPlugin from 'eslint-plugin-react';
 
 export default [
-  {
-    ignores: ['dist'],
-  },
+  { ignores: ['dist'] },
   {
     files: ['**/*.{js,jsx}', '**/_id.{js,jsx}'],
     languageOptions: {
@@ -15,9 +13,7 @@ export default [
       globals: globals.browser,
       parserOptions: {
         ecmaVersion: 'latest',
-        ecmaFeatures: {
-          jsx: true,
-        },
+        ecmaFeatures: { jsx: true },
         sourceType: 'module',
       },
     },
@@ -26,31 +22,28 @@ export default [
       'react-refresh': reactRefresh,
       react: reactPlugin,
     },
-    settings: {
-      react: {
-        version: 'detect',
-      },
-    },
+    settings: { react: { version: 'detect' } },
     rules: {
       ...js.configs.recommended.rules,
       ...reactHooks.configs.recommended.rules,
-      'no-unused-vars': [
-        'warn',
-        {
-          varsIgnorePattern: '^[A-Z_]',
-        },
-      ],
+      'no-unused-vars': ['warn', { varsIgnorePattern: '^[A-Z_]' }],
       'react-refresh/only-export-components': [
         'warn',
-        {
-          allowConstantExport: true,
-        },
+        { allowConstantExport: true },
       ],
       'react-hooks/rules-of-hooks': 'error',
       'react-hooks/exhaustive-deps': 'warn',
       'react/prop-types': 0,
       'react/display-name': 0,
       'react/jsx-no-undef': 'error',
+      'react/jsx-closing-tag-location': ['warn', 'tag-aligned'],
+      'react/jsx-curly-newline': [
+        'warn',
+        {
+          multiline: 'require',
+          singleline: 'consistent',
+        },
+      ],
 
       'no-console': 1,
       'no-lonely-if': 1,
@@ -69,19 +62,24 @@ export default [
       'comma-dangle': 0,
       'comma-spacing': 1,
       'arrow-spacing': 1,
-      'no-restricted-imports': [
-        'error',
+      'no-restricted-imports': ['error', { patterns: ['@mui/*/*/*'] }],
+      'no-undef': 'error',
+      'object-curly-newline': [
+        'warn',
         {
-          patterns: ['@mui/*/*/*'],
+          ObjectExpression: {
+            multiline: true,
+            minProperties: 3,
+          },
+          ObjectPattern: { multiline: true },
+          ImportDeclaration: { multiline: true, minProperties: 3 },
+          ExportDeclaration: { multiline: true, minProperties: 3 },
         },
       ],
       'object-property-newline': [
-        'error',
-        {
-          allowMultiplePropertiesPerLine: false,
-        },
+        'warn',
+        { allowMultiplePropertiesPerLine: true },
       ],
-      'no-undef': 'error',
     },
   },
 ];
