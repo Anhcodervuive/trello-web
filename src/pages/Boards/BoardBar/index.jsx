@@ -108,11 +108,14 @@ function BoardBar() {
         </Button>
         <AvatarGroup max={4} sx={
           {
+            gap: 1,
             '& .MuiAvatar-root' : {
               width: '30px',
               height: '30px',
               fontSize: '1rem',
-              border: 'none'
+              border: 'none',
+              cursor : 'pointer',
+              '&:first-of-style' : { bgcolor: '#a4b0de' }
             }
           }
         }>
