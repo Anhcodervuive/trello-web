@@ -11,6 +11,8 @@ import Tooltip from '@mui/material/Tooltip';
 import Button from '@mui/material/Button';
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 
+import { capitalizeFirstLetter } from '~/utils/formatters'
+
 const MENU_STYLES = {
   backgroundColor: 'transparent',
   color: 'white',
@@ -21,7 +23,7 @@ const MENU_STYLES = {
   '&:hover': { bgcolor: 'primary.100' }
 }
 
-function BoardBar() {
+function BoardBar({ board }) {
   return (
     <Box
       px={2}
@@ -51,7 +53,7 @@ function BoardBar() {
             MENU_STYLES
           }
           icon={<DashboardIcon />}
-          label="Do Thanh Du"
+          label={board?.title}
           clickable
         />
         <Chip
@@ -59,7 +61,7 @@ function BoardBar() {
             MENU_STYLES
           }
           icon={<VpnLockIcon />}
-          label="Public/private workspace"
+          label={capitalizeFirstLetter(board?.type)}
           clickable
         />
         <Chip
