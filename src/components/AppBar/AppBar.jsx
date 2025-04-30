@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Box from '@mui/material/Box';
-import ModeSelect from '~/components/ModeSelect';
+import ModeSelect from '~/components/ModeSelect/ModeSelect';
 import AppsIcon from '@mui/icons-material/Apps';
 import { createSvgIcon } from '@mui/material/utils';
 import Typography from '@mui/material/Typography';
