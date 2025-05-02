@@ -29,6 +29,7 @@ function Column({ column }) {
     setNodeRef,
     transform,
     transition,
+    isDragging,
   } = useSortable({ id: column._id, data: { ...column } });
 
   const dndkitColumnStyles = {
@@ -36,6 +37,7 @@ function Column({ column }) {
     // Nếu sử dụng CSS.Tranform có thể sẽ bị lỗi strecth
     transform: CSS.Translate.toString(transform),
     transition,
+    opacity: isDragging ? 0.5 : undefined
   };
 
   const [anchorEl, setAnchorEl] = useState(null);
