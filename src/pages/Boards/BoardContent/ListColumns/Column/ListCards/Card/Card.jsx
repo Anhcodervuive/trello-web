@@ -25,16 +25,17 @@ function Card({ card }) {
     // Nếu sử dụng CSS.Tranform có thể sẽ bị lỗi strecth
     transform: CSS.Translate.toString(transform),
     transition,
-    opacity: isDragging ? 0.5 : undefined
+    opacity: isDragging ? 0.5 : undefined,
+    border: isDragging ? '1px solid #2ecc71' : undefined
   };
   const shouldShowCardAction = () => {
     return !!card?.memberIds?.length && !!card?.comments?.length && !!card?.attachments?.length;
   }
 
   return (
-    <MuiCard 
+    <MuiCard
       ref={setNodeRef}
-      style={dndkitCardStyles }
+      style={dndkitCardStyles}
       {...attributes}
       {...listeners}
       sx={
