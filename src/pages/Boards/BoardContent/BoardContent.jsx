@@ -17,10 +17,12 @@ import {
 } from 'react';
 import { arrayMove } from '@dnd-kit/sortable'
 import { mapOrder } from '~/utils/sort'
-import { cloneDeep } from 'lodash';
+import { cloneDeep, isEmpty } from 'lodash';
 
 import Column from './ListColumns/Column/Column';
 import Card from './ListColumns/Column/ListCards/Card/Card';
+
+import { generatePlaceholderCard } from '~/utils/formatters'
 
 const ACTIVE_DRAG_ITEM_TYPE = {
   COLUMN: 'ACTIVE_DRAG_ITEM_TYPE_COL',
@@ -105,6 +107,11 @@ function BoardContent({ board }) {
           // Xóa card ra khỏi column active (là column cũ chúng ta kéo card ra khỏi)
           nextActiveColumns.cards = nextActiveColumns.cards.filter(card => card._id !== activeDragItemId)
 
+          // Thêm vào column 1 placeholder card nếu card sau khi kéo hết bị rỗng
+          if (isEmpty(nextActiveColumns?.cards)) {
+            nextActiveColumns.cards = [generatePlaceholderCard(nextActiveColumns)]
+          }
+
           // Cập nhật lại thứ tự card
           nextActiveColumns.cardOrderIds = nextActiveColumns.cards.map(card => card._id);
         }
@@ -120,10 +127,14 @@ function BoardContent({ board }) {
 
           // Thêm card vào column over (là column mới chúng ta kéo card vào)
           nextOverColumns.cards = nextOverColumns.cards.toSpliced(newCardIndex, 0, rebuild_activeDraggingCardData)
+
+          // Xóa placeholder card nếu column đang rỗng và có card mới vào
+          nextOverColumns.cards = nextOverColumns.cards.filter(card => !card.FE_PlaceholderCard);
+
           // Cập nhật lại thứ tự card
           nextOverColumns.cardOrderIds = nextOverColumns.cards.map(card => card._id);
         }
-
+        // console.log('next avtive column', nextActiveColumns, 'next over column', nextOverColumns);
         return nextColumns;
       })
     }
@@ -171,6 +182,11 @@ function BoardContent({ board }) {
             // Xóa card ra khỏi column active (là column cũ chúng ta kéo card ra khỏi)
             nextActiveColumns.cards = nextActiveColumns.cards.filter(card => card._id !== activeDragItemId)
 
+            // Thêm vào column 1 placeholder card nếu card sau khi kéo hết bị rỗng
+            if (isEmpty(nextActiveColumns?.cards)) {
+              nextActiveColumns.cards = [generatePlaceholderCard(nextActiveColumns)]
+            }
+
             // Cập nhật lại thứ tự card
             nextActiveColumns.cardOrderIds = nextActiveColumns.cards.map(card => card._id);
           }
@@ -187,9 +203,14 @@ function BoardContent({ board }) {
 
             // Thêm card vào column over (là column mới chúng ta kéo card vào)
             nextOverColumns.cards = nextOverColumns.cards.toSpliced(newCardIndex, 0, rebuild_activeDraggingCardData)
+
+            // Xóa placeholder card nếu column đang rỗng và có card mới vào
+            nextOverColumns.cards = nextOverColumns.cards.filter(card => !card.FE_PlaceholderCard);
+
             // Cập nhật lại thứ tự card
             nextOverColumns.cardOrderIds = nextOverColumns.cards.map(card => card._id);
           }
+          // console.log('next avtive column', nextActiveColumns, 'next over column', nextOverColumns);
 
           return nextColumns;
         })
@@ -237,7 +258,7 @@ function BoardContent({ board }) {
     if (activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.COLUMN) {
       return closestCorners({ ...args })
     }
-    console.log(args);
+    // console.log(args);
     // Tìm các điểm giao nhau, va chạm với con trỏ
     const pointerIntersection = pointerWithin(args);
 
