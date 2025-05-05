@@ -1,4 +1,4 @@
-# TailwindCSS coffee page by Anhcodervuive
+# trello clone
 
 ## Requirements
 * **nodejs >= v16.7.0**
