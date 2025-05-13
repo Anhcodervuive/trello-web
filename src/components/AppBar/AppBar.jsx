@@ -100,13 +100,16 @@ function AppBar() {
                 </InputAdornment>
               ),
               endAdornment: (
-                <CloseIcon fontSize='small' sx={{ color: searchValue ? 'white' : 'transparent', cursor: 'pointer' }} onClick={() => setSearchValue('')}/>
+                <InputAdornment position="end">
+                  <CloseIcon fontSize='small' sx={{ color: searchValue ? 'white' : 'transparent', cursor: 'pointer' }} onClick={() => setSearchValue('')}/>
+                </InputAdornment>
               )
             }
           }
           sx={
             {
               minWidth: 120,
+              maxWidth: 180,
               '& label': { color: 'white' },
               '& input': { color: 'white' },
               '& label.Mui-focused': { color: 'white' },
