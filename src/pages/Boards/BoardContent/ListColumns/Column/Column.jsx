@@ -23,6 +23,7 @@ import TextField from '@mui/material/TextField';
 import CloseIcon from '@mui/icons-material/Close';
 
 import { mapOrder } from '~/utils/sort'
+import { toast } from 'react-toastify';
 
 function Column({ column }) {
   const {
@@ -57,6 +58,10 @@ function Column({ column }) {
   const [newCardTitle, setNewCardTitle] = useState('');
   const addNewCard = () => {
     if (!newCardTitle) {
+      toast.error('Please enter card title', {
+        theme: 'colored',
+        position: 'bottom-left',
+      });
       return;
     }
 
