@@ -211,6 +211,7 @@ function Column({ column }) {
                   size='small'
                   variant='outlined'
                   autoFocus
+                  data-no-dnd="true"
                   value={newCardTitle}
                   onChange={(e) => setNewCardTitle(e.target.value)}
                   sx={
@@ -231,6 +232,7 @@ function Column({ column }) {
                   variant='contained'
                   color='success'
                   size='small'
+                  data-no-dnd="true"
                   sx={
                     {
                       boxShadow: 'none',
@@ -245,6 +247,7 @@ function Column({ column }) {
                 <CloseIcon
                   onClick={toogleOpenNewCardForm}
                   fontSize='small'
+                  data-no-dnd="true"
                   sx={
                     {
                       color: theme => theme.palette.warning.main,

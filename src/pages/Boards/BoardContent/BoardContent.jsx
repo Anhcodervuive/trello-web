@@ -2,8 +2,6 @@ import Box from '@mui/material/Box';
 import ListColumns from './ListColumns/ListColumns';
 import {
   DndContext,
-  MouseSensor,
-  TouchSensor,
   useSensor,
   useSensors,
   DragOverlay,
@@ -12,6 +10,10 @@ import {
   closestCorners,
   getFirstCollision,
 } from '@dnd-kit/core';
+import {
+  MouseSensor,
+  TouchSensor,
+} from '~/customLibraries/DndkitSensors';
 import {
   useCallback, useEffect, useRef, useState
 } from 'react';
