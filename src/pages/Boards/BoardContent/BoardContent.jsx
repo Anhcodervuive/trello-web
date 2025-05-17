@@ -31,7 +31,7 @@ const ACTIVE_DRAG_ITEM_TYPE = {
   CARD: 'ACTIVE_DRAG_ITEM_TYPE_CARD'
 }
 
-function BoardContent({ board, createNewColumn, createNewCard }) {
+function BoardContent({ board, createNewColumn, createNewCard, moveColumn }) {
   // Nếu dùng pointer sensor mặc định thì phải kết hợp thêm thuộc tính css touchAction : none
   // const pointerSensor = useSensor(PointerSensor, { activationConstraint: { distance: 10 } });
   // Yêu cầu chuột phải duy chuyển 10px trước khi gọi event, fix trường hợp click bị gọi event
@@ -245,6 +245,10 @@ function BoardContent({ board, createNewColumn, createNewCard }) {
       const newColumnIndex = orderedColumns.findIndex(c => c._id === over.id);
 
       const dndOrderedColumns = arrayMove(orderedColumns, oldColumnIndex, newColumnIndex);
+
+      // Gọi hàm duy chuyển column được comp cha cung cấp (Khá lỏ, nên sử dụng redux hoặc useContext)
+      moveColumn(dndOrderedColumns)
+
       setOrderedColumns(dndOrderedColumns)
     }
     setActiveDragItemId(null);

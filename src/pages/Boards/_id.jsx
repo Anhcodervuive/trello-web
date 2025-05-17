@@ -9,7 +9,7 @@ import BoardContent from './BoardContent/BoardContent';
 import { generatePlaceholderCard } from '~/utils/formatters';
 
 import {
-  fetchBoardDetailsAPI, createNewCardAPI, createNewColumnAPI
+  fetchBoardDetailsAPI, createNewCardAPI, createNewColumnAPI, updateBoardDetailsAPI
 } from '~/apis/index';
 
 function Board() {
@@ -64,13 +64,26 @@ function Board() {
     setBoard(newBoard)
   }
 
+  const moveColumn = async (dndOrderedColumns) => {
+    console.log(dndOrderedColumns);
+    const dndOrderedColumnIds = dndOrderedColumns.map(column => column._id)
+
+    const newBoard = { ...board }
+    newBoard.columns = dndOrderedColumns
+    newBoard.columnOrderIds = dndOrderedColumnIds
+    setBoard(newBoard)
+
+    // API update board
+    await updateBoardDetailsAPI(newBoard._id, { columnOrderIds: newBoard.columnOrderIds })
+  }
+
   return (
     <Container disableGutters maxWidth={false} sx={
       { height: '100vh', }
     }>
       <AppBar />
       <BoardBar board={board} />
-      <BoardContent board={board} createNewColumn={createNewColumn} createNewCard={createNewCard} />
+      <BoardContent board={board} createNewColumn={createNewColumn} createNewCard={createNewCard} moveColumn={moveColumn} />
     </Container>
   )
 }
