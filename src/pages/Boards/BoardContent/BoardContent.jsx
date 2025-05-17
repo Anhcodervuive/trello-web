@@ -13,7 +13,7 @@ import {
 import {
   MouseSensor,
   TouchSensor,
-} from '~/customLibraries/DndkitSensors';
+} from '~/customLibraries/DndKitSensors';
 import {
   useCallback, useEffect, useRef, useState
 } from 'react';
@@ -31,7 +31,7 @@ const ACTIVE_DRAG_ITEM_TYPE = {
   CARD: 'ACTIVE_DRAG_ITEM_TYPE_CARD'
 }
 
-function BoardContent({ board }) {
+function BoardContent({ board, createNewColumn, createNewCard }) {
   // Nếu dùng pointer sensor mặc định thì phải kết hợp thêm thuộc tính css touchAction : none
   // const pointerSensor = useSensor(PointerSensor, { activationConstraint: { distance: 10 } });
   // Yêu cầu chuột phải duy chuyển 10px trước khi gọi event, fix trường hợp click bị gọi event
@@ -309,7 +309,7 @@ function BoardContent({ board }) {
         }
       }>
         {/* Box column */}
-        <ListColumns columns={orderedColumns} />
+        <ListColumns columns={orderedColumns} createNewColumn={createNewColumn} createNewCard={createNewCard}/>
         <DragOverlay dropAnimation={dropAnimation}>
           {(!activeDragItemType) && null}
           {(activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.COLUMN) && <Column column={activeDragItemData} />}

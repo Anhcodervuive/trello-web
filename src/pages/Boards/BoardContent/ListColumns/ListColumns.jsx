@@ -8,11 +8,11 @@ import { SortableContext, horizontalListSortingStrategy } from '@dnd-kit/sortabl
 import TextField from '@mui/material/TextField';
 import CloseIcon from '@mui/icons-material/Close';
 
-function ListColumns({ columns }) {
+function ListColumns({ columns, createNewColumn, createNewCard }) {
   const [openNewColumnForm, setOpenNewColumnForm] = useState(false);
   const toogleOpenNewColumnForm = () => setOpenNewColumnForm(!openNewColumnForm);
   const [newColumnTitle, setNewColumnTitle] = useState('');
-  const addNewColumn = () => {
+  const addNewColumn = async () => {
     if (!newColumnTitle) {
       toast.error('Please enter column title', {
         theme: 'colored',
@@ -20,6 +20,9 @@ function ListColumns({ columns }) {
       });
       return;
     }
+
+    const newColumnData = { title: newColumnTitle }
+    await createNewColumn(newColumnData)
 
     toogleOpenNewColumnForm();
     setNewColumnTitle('');
@@ -39,7 +42,7 @@ function ListColumns({ columns }) {
         }
       >
         {
-          columns?.map(column => (<Column key={column._id} column={column}/>))
+          columns?.map(column => (<Column key={column._id} column={column} createNewCard={createNewCard}/>))
         }
 
         {/* Box add new Column */}

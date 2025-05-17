@@ -25,7 +25,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { mapOrder } from '~/utils/sort'
 import { toast } from 'react-toastify';
 
-function Column({ column }) {
+function Column({ column, createNewCard }) {
   const {
     attributes,
     listeners,
@@ -56,7 +56,7 @@ function Column({ column }) {
   const [openNewCardForm, setOpenNewCardForm] = useState(false);
   const toogleOpenNewCardForm = () => setOpenNewCardForm(!openNewCardForm);
   const [newCardTitle, setNewCardTitle] = useState('');
-  const addNewCard = () => {
+  const addNewCard = async () => {
     if (!newCardTitle) {
       toast.error('Please enter card title', {
         theme: 'colored',
@@ -64,6 +64,11 @@ function Column({ column }) {
       });
       return;
     }
+
+    const createdCard = await createNewCard({
+      title: newCardTitle,
+      columnId: column._id
+    })
 
     toogleOpenNewCardForm();
     setNewCardTitle('');
