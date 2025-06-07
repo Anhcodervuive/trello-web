@@ -22,7 +22,6 @@ import { CSS } from '@dnd-kit/utilities';
 import TextField from '@mui/material/TextField';
 import CloseIcon from '@mui/icons-material/Close';
 
-import { mapOrder } from '~/utils/sort'
 import { toast } from 'react-toastify';
 
 function Column({ column, createNewCard }) {
@@ -45,7 +44,7 @@ function Column({ column, createNewCard }) {
 
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
-  const orderedCards = mapOrder(column?.cards, column?.cardOrderIds, '_id')
+  const orderedCards = column.cards
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -56,7 +55,7 @@ function Column({ column, createNewCard }) {
   const [openNewCardForm, setOpenNewCardForm] = useState(false);
   const toogleOpenNewCardForm = () => setOpenNewCardForm(!openNewCardForm);
   const [newCardTitle, setNewCardTitle] = useState('');
-  const addNewCard = async () => {
+  const addNewCard = () => {
     if (!newCardTitle) {
       toast.error('Please enter card title', {
         theme: 'colored',
@@ -65,7 +64,7 @@ function Column({ column, createNewCard }) {
       return;
     }
 
-    const createdCard = await createNewCard({
+    createNewCard({
       title: newCardTitle,
       columnId: column._id
     })

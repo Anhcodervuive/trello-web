@@ -12,7 +12,7 @@ function ListColumns({ columns, createNewColumn, createNewCard }) {
   const [openNewColumnForm, setOpenNewColumnForm] = useState(false);
   const toogleOpenNewColumnForm = () => setOpenNewColumnForm(!openNewColumnForm);
   const [newColumnTitle, setNewColumnTitle] = useState('');
-  const addNewColumn = async () => {
+  const addNewColumn = () => {
     if (!newColumnTitle) {
       toast.error('Please enter column title', {
         theme: 'colored',
@@ -22,7 +22,7 @@ function ListColumns({ columns, createNewColumn, createNewCard }) {
     }
 
     const newColumnData = { title: newColumnTitle }
-    await createNewColumn(newColumnData)
+    createNewColumn(newColumnData)
 
     toogleOpenNewColumnForm();
     setNewColumnTitle('');
