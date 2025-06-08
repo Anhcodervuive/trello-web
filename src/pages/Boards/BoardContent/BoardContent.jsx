@@ -30,7 +30,14 @@ const ACTIVE_DRAG_ITEM_TYPE = {
   CARD: 'ACTIVE_DRAG_ITEM_TYPE_CARD'
 }
 
-function BoardContent({ board, createNewColumn, createNewCard, moveColumn, moveCardInTheSameColumn }) {
+function BoardContent({
+  board,
+  createNewColumn,
+  createNewCard,
+  moveColumn,
+  moveCardInTheSameColumn,
+  moveCardInDifferentColumn
+}) {
   // Nếu dùng pointer sensor mặc định thì phải kết hợp thêm thuộc tính css touchAction : none
   // const pointerSensor = useSensor(PointerSensor, { activationConstraint: { distance: 10 } });
   // Yêu cầu chuột phải duy chuyển 10px trước khi gọi event, fix trường hợp click bị gọi event
@@ -213,6 +220,7 @@ function BoardContent({ board, createNewColumn, createNewCard, moveColumn, moveC
             nextOverColumns.cardOrderIds = nextOverColumns.cards.map(card => card._id);
           }
           // console.log('next avtive column', nextActiveColumns, 'next over column', nextOverColumns);
+          moveCardInDifferentColumn(activeDraggingCardId, oldColumnWhenDraggingCard._id, nextOverColumns._id, nextColumns)
 
           return nextColumns;
         })

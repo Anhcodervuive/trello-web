@@ -14,7 +14,8 @@ import {
   createNewCardAPI,
   createNewColumnAPI,
   updateBoardDetailsAPI,
-  updateColumnDetailsAPI
+  updateColumnDetailsAPI,
+  moveCardTodifferentColumnAPI,
 } from '~/apis/index';
 import {
   Box, CircularProgress, Typography
@@ -106,6 +107,32 @@ function Board() {
     updateColumnDetailsAPI(columnId, { cardOrderIds: dndOrderedCardIds })
   }
 
+  // Cập nhật lại mảng cardOrderIds của column ban đầu chứa nó
+  // Cập nhật lại mảng cardOrderIds của column tiếp theo
+  // Cập nhật lại trường columnId mới của card vừa kéo
+  const moveCardInDifferentColumn = (currentCardId, prevColumnId, nextColumnId, dndOrderedColumns) => {
+    console.log('currentCardId: ', currentCardId)
+    console.log('prevColumnId: ', prevColumnId)
+    console.log('nextColumnId: ', nextColumnId)
+    console.log('dndOrderedColumns: ', dndOrderedColumns)
+
+    console.log(dndOrderedColumns);
+    const dndOrderedColumnIds = dndOrderedColumns.map(column => column._id)
+
+    const newBoard = { ...board }
+    newBoard.columns = dndOrderedColumns
+    newBoard.columnOrderIds = dndOrderedColumnIds
+    setBoard(newBoard)
+
+    moveCardTodifferentColumnAPI({
+      currentCardId,
+      prevColumnId,
+      prevCardOrderIds: dndOrderedColumns.find(c => c._id === prevColumnId)?.cardOrderIds,
+      nextColumnId,
+      nextCardOrderIds: dndOrderedColumns.find(c => c._id === nextColumnId)?.cardOrderIds,
+    })
+  }
+
   if (!board) {
     return (
       <Box sx={
@@ -131,6 +158,7 @@ function Board() {
         createNewCard={createNewCard}
         moveColumn={moveColumn}
         moveCardInTheSameColumn={moveCardInTheSameColumn}
+        moveCardInDifferentColumn={moveCardInDifferentColumn}
       />
     </Container>
   )
