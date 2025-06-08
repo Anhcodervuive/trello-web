@@ -74,7 +74,12 @@ function Board() {
     if (columnToUpdate) {
       columnToUpdate.cards.push(createdCard)
       columnToUpdate.cardOrderIds.push(createdCard._id)
+
+      // Khi thêm 1 card vào 1 column rỗng thì xóa placeholder Card
+      columnToUpdate.cards = columnToUpdate.cards.filter(card => !card._id.includes('placeholder-card'))
+      columnToUpdate.cardOrderIds = columnToUpdate.cardOrderIds.filter(cardId => !cardId.includes('placeholder-card'))
     }
+    console.log(columnToUpdate);
     setBoard(newBoard)
   }
 
@@ -111,12 +116,6 @@ function Board() {
   // Cập nhật lại mảng cardOrderIds của column tiếp theo
   // Cập nhật lại trường columnId mới của card vừa kéo
   const moveCardInDifferentColumn = (currentCardId, prevColumnId, nextColumnId, dndOrderedColumns) => {
-    console.log('currentCardId: ', currentCardId)
-    console.log('prevColumnId: ', prevColumnId)
-    console.log('nextColumnId: ', nextColumnId)
-    console.log('dndOrderedColumns: ', dndOrderedColumns)
-
-    console.log(dndOrderedColumns);
     const dndOrderedColumnIds = dndOrderedColumns.map(column => column._id)
 
     const newBoard = { ...board }
@@ -124,10 +123,14 @@ function Board() {
     newBoard.columnOrderIds = dndOrderedColumnIds
     setBoard(newBoard)
 
+    let prevCardOrderIds = dndOrderedColumns.find(c => c._id === prevColumnId)?.cardOrderIds
+    // Xử lý trường hợp chỉ còn lại 1 card trong column (1 card orderIds và 1 placeholderCard)
+    // sao khi kéo card đó ra khỏi column cũ thì k gửi id card placeholder lên
+    prevCardOrderIds = prevCardOrderIds.filter(cardId => !cardId.includes('placeholder-card'))
     moveCardTodifferentColumnAPI({
       currentCardId,
       prevColumnId,
-      prevCardOrderIds: dndOrderedColumns.find(c => c._id === prevColumnId)?.cardOrderIds,
+      prevCardOrderIds,
       nextColumnId,
       nextCardOrderIds: dndOrderedColumns.find(c => c._id === nextColumnId)?.cardOrderIds,
     })
