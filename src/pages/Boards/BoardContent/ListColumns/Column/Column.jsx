@@ -21,10 +21,11 @@ import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import TextField from '@mui/material/TextField';
 import CloseIcon from '@mui/icons-material/Close';
+import { useConfirm } from 'material-ui-confirm';
 
 import { toast } from 'react-toastify';
 
-function Column({ column, createNewCard }) {
+function Column({ column, createNewCard, deleteColumnDetail }) {
   const {
     attributes,
     listeners,
@@ -33,6 +34,7 @@ function Column({ column, createNewCard }) {
     transition,
     isDragging,
   } = useSortable({ id: column._id, data: { ...column } });
+  const confirmDeleteColumn = useConfirm()
 
   const dndkitColumnStyles = {
     // touchAction: 'none', // Dành cho sensor default dạng pointer sensor
@@ -72,6 +74,19 @@ function Column({ column, createNewCard }) {
     toogleOpenNewCardForm();
     setNewCardTitle('');
   }
+
+  const handleDeleteColumn = async () => {
+    confirmDeleteColumn({
+      description: 'This action will permanently delete your Column and its card! Are you sure?',
+      title: 'Delete column',
+      confirmationButtonProps: { color: 'error' },
+    })
+      .then(() => {
+        deleteColumnDetail(column._id);
+      })
+      .catch(() => {});
+  }
+
   return (
     <Box
       ref={setNodeRef}
@@ -128,13 +143,24 @@ function Column({ column, createNewCard }) {
             anchorEl={anchorEl}
             open={open}
             onClose={handleClose}
+            onClick={handleClose}
             MenuListProps={
               { 'aria-labelledby': 'basic-button-column-dropdown"', }
             }
           >
-            <MenuItem>
+            <MenuItem
+              onClick={toogleOpenNewCardForm}
+              sx={{
+                '&:hover': {
+                  color: 'success.light',
+                  '& .add-card-icon': {
+                    color: 'success.light'
+                  }
+                }
+              }}
+            >
               <ListItemIcon>
-                <AddCardIcon fontSize="small" />
+                <AddCardIcon fontSize="small" className='add-card-icon' />
               </ListItemIcon>
               <ListItemText>Add card</ListItemText>
             </MenuItem>
@@ -157,11 +183,22 @@ function Column({ column, createNewCard }) {
               <ListItemText>Paste</ListItemText>
             </MenuItem>
             <Divider />
-            <MenuItem>
+            <MenuItem
+              onClick={handleDeleteColumn}
+              sx={{
+                '&:hover': {
+                  color: 'warning.dark',
+                  '& .delete-forever-icon': {
+                    color: 'warning.dark'
+                  }
+                }
+              }}
+            >
               <ListItemIcon>
-                <DeleteOutlineIcon fontSize="small" />
+                <DeleteOutlineIcon fontSize="small" className='delete-forever-icon' />
               </ListItemIcon>
-              <ListItemText>Remove this column</ListItemText>
+              <ListItemText>Remove this column
+              </ListItemText>
             </MenuItem>
             <MenuItem>
               <ListItemIcon>

@@ -37,13 +37,6 @@ export default [
       'react/display-name': 0,
       'react/jsx-no-undef': 'error',
       'react/jsx-closing-tag-location': ['warn', 'tag-aligned'],
-      'react/jsx-curly-newline': [
-        'warn',
-        {
-          multiline: 'require',
-          singleline: 'consistent',
-        },
-      ],
 
       // 'no-console': 1,
       'no-lonely-if': 1,
@@ -64,22 +57,22 @@ export default [
       'arrow-spacing': 1,
       'no-restricted-imports': ['error', { patterns: ['@mui/*/*/*'] }],
       'no-undef': 'error',
-      'object-curly-newline': [
-        'warn',
-        {
-          ObjectExpression: {
-            multiline: true,
-            minProperties: 3,
-          },
-          ObjectPattern: { multiline: true },
-          ImportDeclaration: { multiline: true, minProperties: 3 },
-          ExportDeclaration: { multiline: true, minProperties: 3 },
-        },
-      ],
-      'object-property-newline': [
-        'warn',
-        { allowMultiplePropertiesPerLine: true },
-      ],
+      // 'object-curly-newline': [
+      //   'warn',
+      //   {
+      //     ObjectExpression: {
+      //       multiline: true,
+      //       minProperties: 3,
+      //     },
+      //     ObjectPattern: { multiline: true },
+      //     ImportDeclaration: { multiline: true, minProperties: 3 },
+      //     ExportDeclaration: { multiline: true, minProperties: 3 },
+      //   },
+      // ],
+      // 'object-property-newline': [
+      //   'warn',
+      //   { allowMultiplePropertiesPerLine: true },
+      // ],
     },
   },
 ];
