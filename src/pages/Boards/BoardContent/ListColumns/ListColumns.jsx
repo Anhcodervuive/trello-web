@@ -7,12 +7,19 @@ import AddIcon from '@mui/icons-material/Add';
 import { SortableContext, horizontalListSortingStrategy } from '@dnd-kit/sortable';
 import TextField from '@mui/material/TextField';
 import CloseIcon from '@mui/icons-material/Close';
+import { useDispatch, useSelector } from 'react-redux';
+import { createNewColumnAPI } from '~/apis';
+import { generatePlaceholderCard } from '~/utils/formatters';
+import { cloneDeep } from 'lodash';
+import { selectCurrentActiveBoard, updateCurrentActiveBoard } from '~/redux/activeBoard/activeBoardSlice';
 
-function ListColumns({ columns, createNewColumn, createNewCard, deleteColumnDetail }) {
+function ListColumns({ columns }) {
+  const board = useSelector(selectCurrentActiveBoard);
+  const dispatch = useDispatch()
   const [openNewColumnForm, setOpenNewColumnForm] = useState(false);
   const toogleOpenNewColumnForm = () => setOpenNewColumnForm(!openNewColumnForm);
   const [newColumnTitle, setNewColumnTitle] = useState('');
-  const addNewColumn = () => {
+  const addNewColumn = async () => {
     if (!newColumnTitle) {
       toast.error('Please enter column title', {
         theme: 'colored',
@@ -22,7 +29,22 @@ function ListColumns({ columns, createNewColumn, createNewCard, deleteColumnDeta
     }
 
     const newColumnData = { title: newColumnTitle }
-    createNewColumn(newColumnData)
+    const createdColumn = await createNewColumnAPI({
+      ...newColumnData,
+      boardId: board._id
+    })
+
+    // Khi mới tạo column thì chưa có card, cần xử lý vấn đề kéo thả bằng vào column mới bằng cách để 1 placeholder card
+    createdColumn.cards = [generatePlaceholderCard(createdColumn)]
+    createdColumn.cardOrderIds = [generatePlaceholderCard(createdColumn)._id]
+
+    // Dính lỗi object is not extensible khi cố gắng thêm thuộc tính mới vào object
+    // Dù đã sử dụng spread operator để tạo ra object mới nhưng bản chất của spread operator là shadow clone
+    // Nên dính phải rule Immutability trong redux toolkit không dùng được hàm push, sửa giá trị mảng trực tiếp
+    const newBoard = cloneDeep(board)
+    newBoard.columns.push(createdColumn)
+    newBoard.columnOrderIds.push(createdColumn._id)
+    dispatch(updateCurrentActiveBoard(newBoard))
 
     toogleOpenNewColumnForm();
     setNewColumnTitle('');
@@ -46,8 +68,6 @@ function ListColumns({ columns, createNewColumn, createNewCard, deleteColumnDeta
             <Column
               key={column._id}
               column={column}
-              createNewCard={createNewCard}
-              deleteColumnDetail={deleteColumnDetail}
             />
           ))
         }

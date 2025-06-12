@@ -24,8 +24,12 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useConfirm } from 'material-ui-confirm';
 
 import { toast } from 'react-toastify';
+import { cloneDeep } from 'lodash';
+import { createNewCardAPI, deleteColumnDetailsAPI } from '~/apis';
+import { selectCurrentActiveBoard, updateCurrentActiveBoard } from '~/redux/activeBoard/activeBoardSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
-function Column({ column, createNewCard, deleteColumnDetail }) {
+function Column({ column }) {
   const {
     attributes,
     listeners,
@@ -34,6 +38,8 @@ function Column({ column, createNewCard, deleteColumnDetail }) {
     transition,
     isDragging,
   } = useSortable({ id: column._id, data: { ...column } });
+  const board = useSelector(selectCurrentActiveBoard);
+  const dispatch = useDispatch()
   const confirmDeleteColumn = useConfirm()
 
   const dndkitColumnStyles = {
@@ -57,7 +63,7 @@ function Column({ column, createNewCard, deleteColumnDetail }) {
   const [openNewCardForm, setOpenNewCardForm] = useState(false);
   const toogleOpenNewCardForm = () => setOpenNewCardForm(!openNewCardForm);
   const [newCardTitle, setNewCardTitle] = useState('');
-  const addNewCard = () => {
+  const addNewCard = async () => {
     if (!newCardTitle) {
       toast.error('Please enter card title', {
         theme: 'colored',
@@ -66,10 +72,24 @@ function Column({ column, createNewCard, deleteColumnDetail }) {
       return;
     }
 
-    createNewCard({
+    const createdCard = await createNewCardAPI({
       title: newCardTitle,
-      columnId: column._id
+      columnId: column._id,
+      boardId: board._id
     })
+
+    const newBoard = cloneDeep(board)
+    const columnToUpdate = newBoard.columns.find(column => column._id === createdCard.columnId)
+    if (columnToUpdate) {
+      columnToUpdate.cards.push(createdCard)
+      columnToUpdate.cardOrderIds.push(createdCard._id)
+
+      // Khi thêm 1 card vào 1 column rỗng thì xóa placeholder Card
+      columnToUpdate.cards = columnToUpdate.cards.filter(card => !card._id.includes('placeholder-card'))
+      columnToUpdate.cardOrderIds = columnToUpdate.cardOrderIds.filter(cardId => !cardId.includes('placeholder-card'))
+    }
+    console.log(columnToUpdate);
+    dispatch(updateCurrentActiveBoard(newBoard))
 
     toogleOpenNewCardForm();
     setNewCardTitle('');
@@ -82,7 +102,21 @@ function Column({ column, createNewCard, deleteColumnDetail }) {
       confirmationButtonProps: { color: 'error' },
     })
       .then(() => {
-        deleteColumnDetail(column._id);
+        // Cập nhật lại chuẩn dữ liệu state board
+
+        const newBoard = cloneDeep(board)
+        newBoard.columns = newBoard.columns.filter(c => c._id !== column._id)
+        newBoard.columnOrderIds = newBoard.columnOrderIds.filter(id => id !== column._id)
+        dispatch(updateCurrentActiveBoard(newBoard))
+
+        deleteColumnDetailsAPI(column._id)
+          .then(res => {
+            console.log(res);
+            toast.success(res?.deleteResult)
+          })
+          .catch(err => {
+            console.log(err);
+          })
       })
       .catch(() => {});
   }
