@@ -10,11 +10,14 @@ import { ConfirmProvider } from 'material-ui-confirm';
 import { Provider } from 'react-redux';
 import { store } from '~/redux/store.js';
 
+// Cấu hình react-router-dom với browser router
+import { BrowserRouter } from 'react-router-dom';
+
 import App from './App.jsx'
 import theme from './theme.jsx'
 
 createRoot(document.getElementById('root')).render(
-  <>
+  <BrowserRouter basename='/'>
     <Provider store={store}>
       <CssVarsProvider theme={theme}>
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
@@ -29,5 +32,5 @@ createRoot(document.getElementById('root')).render(
         </ConfirmProvider>
       </CssVarsProvider>
     </Provider>
-  </>
+  </BrowserRouter>
 )

@@ -21,15 +21,16 @@ import {
 
 import { useDispatch, useSelector } from 'react-redux';
 import { cloneDeep } from 'lodash';
+import { useParams } from 'react-router-dom';
 
 function Board() {
   const dispatch = useDispatch();
+  const { boardId } = useParams();
   const board = useSelector(selectCurrentActiveBoard);
 
   React.useEffect(() => {
-    const boardId = '6820b9391b72625d8dce2a5b';
     dispatch(fetchBoardDetailAPI(boardId))
-  }, [dispatch]);
+  }, [boardId, dispatch]);
 
   // Khi kéo thả column xong xuôi thì gọi API cập nhật lại columnOrderIds
   const moveColumn = (dndOrderedColumns) => {
