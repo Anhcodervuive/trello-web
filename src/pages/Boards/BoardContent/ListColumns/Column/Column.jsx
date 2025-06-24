@@ -183,6 +183,7 @@ function Column({ column }) {
             }
           >
             <MenuItem
+              className='interceptor-loading'
               onClick={toogleOpenNewCardForm}
               sx={{
                 '&:hover': {
@@ -308,6 +309,7 @@ function Column({ column }) {
                   }
                 />
                 <Button
+                  className='interceptor-loading'
                   onClick={addNewCard}
                   variant='contained'
                   color='success'

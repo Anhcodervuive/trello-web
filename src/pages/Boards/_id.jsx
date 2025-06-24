@@ -11,9 +11,6 @@ import {
   moveCardTodifferentColumnAPI,
 } from '~/apis/index';
 import {
-  Box, CircularProgress, Typography
-} from '@mui/material';
-import {
   fetchBoardDetailAPI,
   updateCurrentActiveBoard,
   selectCurrentActiveBoard
@@ -22,6 +19,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { cloneDeep } from 'lodash';
 import { useParams } from 'react-router-dom';
+import PageLoadingSpinner from '~/components/Loading/PageLoadingSpinner';
 
 function Board() {
   const dispatch = useDispatch();
@@ -88,14 +86,7 @@ function Board() {
 
   if (!board) {
     return (
-      <Box sx={
-        {
-          width: '100vw', height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 2
-        }
-      }>
-        <CircularProgress />
-        <Typography variant='h5'>Loading board ...</Typography>
-      </Box>
+      <PageLoadingSpinner caption='...Loading board' />
     )
   }
 
