@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { toast } from 'react-toastify';
 import authorizeAxiosInstance from '~/utils/authorizeAxios';
 import { API_ROOT } from '~/utils/contants';
 
@@ -22,6 +23,20 @@ export const loginUserAPI = createAsyncThunk(
   }
 );
 
+export const logoutUserAPI = createAsyncThunk(
+  'user/logoutUserAPI',
+  async (showSuccessMessage = true) => {
+    const response = await authorizeAxiosInstance.delete(`${API_ROOT}/v1/users/logout`)
+
+    if (showSuccessMessage) {
+      toast.success('Logged out successfully!')
+    }
+
+    return response.data
+  }
+)
+
+
 const userSlice = createSlice({
   name: 'user',
   initialState,
@@ -33,6 +48,13 @@ const userSlice = createSlice({
         const user = action.payload;
 
         state.currentUser = user;
+      })
+      .addCase(logoutUserAPI.fulfilled, (state) => {
+        /**
+         * API logout sau khi gọi thành công thì sẽ clear thông tin currentUser về null ở đây
+         * Kết hợp ProtectedRoute đã làm ở App.js => code sẽ điều hướng chuẩn về trang Login
+         */
+        state.currentUser = null
       })
       .addCase(loginUserAPI.rejected, (state, action) => {
         // Có thể dùng để set trạng thái lỗi
