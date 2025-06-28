@@ -36,6 +36,14 @@ export const logoutUserAPI = createAsyncThunk(
   }
 )
 
+export const updateUserAPI = createAsyncThunk(
+  'user/updateUserAPI',
+  async (data) => {
+    const response = await authorizeAxiosInstance.put(`${API_ROOT}/v1/users/update`, data);
+    return response.data;
+  }
+);
+
 
 const userSlice = createSlice({
   name: 'user',
@@ -59,6 +67,10 @@ const userSlice = createSlice({
       .addCase(loginUserAPI.rejected, (state, action) => {
         // Có thể dùng để set trạng thái lỗi
         console.error('Login failed:', action.payload);
+      })
+      .addCase(updateUserAPI.fulfilled, (state, action) => {
+        const user = action.payload;
+        state.currentUser = user;
       });
   }
 })
