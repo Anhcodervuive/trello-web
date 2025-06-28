@@ -9,6 +9,7 @@ import AccountVerification from './pages/Auth/AccountVerification.jsx';
 import { useSelector } from 'react-redux';
 import { selectCurrentUser } from './redux/user/userSlice.js';
 import Settings from './pages/Settings/Settings.jsx';
+import Boards from './pages/Boards/index.jsx';
 
 const ProtectedRoute = ({ user }) => {
   if (!user) return <Navigate to='/login' replace={true} />
@@ -21,11 +22,12 @@ function App() {
 
   return (
     <Routes>
-      <Route path='/' element={<Navigate to='/board/6820b9391b72625d8dce2a5b' replace />} />
+      <Route path='/' element={<Navigate to='/boards' replace />} />
       {/* Chuyển hướng về board mặc định nếu không có boardId */}
       <Route element={<ProtectedRoute user={currentUser} />}>
 
         <Route path='/board/:boardId' element={<Board />}/>
+        <Route path='/boards' element={<Boards />} />
 
         <Route path='/settings/account' element={<Settings />} />
         <Route path='/settings/security' element={<Settings />} />
