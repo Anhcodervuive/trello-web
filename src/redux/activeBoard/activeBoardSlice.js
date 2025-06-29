@@ -36,12 +36,29 @@ const activeBoardSlice = createSlice({
 
       state.currentActiveBoard = fullBoard;
     },
+    updateCardInBoard: (state, action) => {
+      const incomingCard = action.payload
+
+      const column = state.currentActiveBoard.columns.find(c => c._id === incomingCard.columnId)
+      if (column) {
+        let card = column.cards.find(c => c._id === incomingCard._id)
+        if (card) {
+          Object.keys(incomingCard).forEach(key => {
+            console.log(incomingCard[key]);
+            card[key] = incomingCard[key]
+          })
+        }
+      }
+    }
   },
   extraReducers: (builder) => {
     builder
       .addCase(fetchBoardDetailAPI.fulfilled, (state, action) => {
         // action.payload là dữ liệu trả về từ API
         const board = action.payload;
+
+        // Thành viên trong board : owners + members
+        board.FE_allUsers = board.owners.concat(board.members)
 
         board.columns = mapOrder(board?.columns, board?.columnOrderIds, '_id')
         board.columns.forEach(column => {
@@ -63,7 +80,7 @@ const activeBoardSlice = createSlice({
   }
 })
 
-export const { updateCurrentActiveBoard } = activeBoardSlice.actions;
+export const { updateCurrentActiveBoard, updateCardInBoard } = activeBoardSlice.actions;
 
 // Selector: nơi dành cho các component bên dưới gọi bằng hook useSelector để lấy dữ liệu
 // từ trong redux store ra xử dụng

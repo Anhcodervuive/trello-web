@@ -37,6 +37,7 @@ import { styled } from '@mui/material/styles'
 import { useDispatch, useSelector } from 'react-redux'
 import { clearCurrentActiveCard, selectCurrentActiveCard, updateCurrentActiveCard } from '~/redux/activeCard/activeCardSlice'
 import { updateCardDetailsAPI } from '~/apis'
+import { updateCardInBoard } from '~/redux/activeBoard/activeBoardSlice'
 const SidebarItem = styled(Box)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
@@ -76,6 +77,8 @@ function ActiveCard() {
 
     dispatch(updateCurrentActiveCard(updatedCard))
 
+    dispatch(updateCardInBoard(updatedCard))
+
     return updatedCard
   }
 
@@ -96,6 +99,13 @@ function ActiveCard() {
     reqData.append('cardCover', event.target?.files[0])
 
     // Gọi API...
+    toast.promise(callApiUpdateCard(reqData).finally(() => event.target.value = ''),
+      { pending: 'Uploading...' }
+    )
+  }
+
+  const onUpdateCardDescription = (newDescription) => {
+    callApiUpdateCard({ description: newDescription })
   }
 
   return (
@@ -163,7 +173,10 @@ function ActiveCard() {
               </Box>
 
               {/* Feature 03: Xử lý mô tả của Card */}
-              <CardDescriptionMdEditor />
+              <CardDescriptionMdEditor
+                cardDescriptionProp={activeCard?.description}
+                handleUpdateCardDescription={onUpdateCardDescription}
+              />
             </Box>
 
             <Box sx={{ mb: 3 }}>
