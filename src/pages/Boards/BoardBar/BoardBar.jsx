@@ -10,6 +10,7 @@ import AvatarGroup from '@mui/material/AvatarGroup';
 import Tooltip from '@mui/material/Tooltip';
 import Button from '@mui/material/Button';
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
+import BoardUserGroup from './BoardUserGroup';
 
 import { capitalizeFirstLetter } from '~/utils/formatters'
 
@@ -110,39 +111,7 @@ function BoardBar({ board }) {
         >
             Invite
         </Button>
-        <AvatarGroup max={4} sx={
-          {
-            gap: 1,
-            '& .MuiAvatar-root' : {
-              width: '30px',
-              height: '30px',
-              fontSize: '1rem',
-              border: 'none',
-              cursor : 'pointer',
-              '&:first-of-style' : { bgcolor: '#a4b0de' }
-            }
-          }
-        }>
-          <Tooltip title="Remy Sharp" arrow>
-            <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-          </Tooltip>
-          <Tooltip title="Andy Yang" arrow>
-            <Avatar alt="Andy Yang" src="/static/images/avatar/1.jpg" />
-          </Tooltip>
-          <Tooltip title="Bai Lu" arrow>
-            <Avatar alt="Bai Lu" src="/static/images/avatar/1.jpg" />
-          </Tooltip>
-          <Tooltip title="Ao rui peng" arrow>
-            <Avatar alt="Ao rui peng" src="/static/images/avatar/1.jpg" />
-          </Tooltip>
-          <Tooltip title="Liu shi shi" arrow>
-            <Avatar alt="Liu shi shi" src="/static/images/avatar/1.jpg" />
-          </Tooltip>
-          {/* <Avatar alt="Travis Howard" src="/static/images/avatar/2.jpg" />
-          <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
-          <Avatar alt="Agnes Walker" src="/static/images/avatar/4.jpg" />
-          <Avatar alt="Trevor Henderson" src="/static/images/avatar/5.jpg" /> */}
-        </AvatarGroup>
+        <BoardUserGroup />
       </Box>
     </Box>
   );
