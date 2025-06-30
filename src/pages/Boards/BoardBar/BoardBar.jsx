@@ -11,6 +11,7 @@ import Tooltip from '@mui/material/Tooltip';
 import Button from '@mui/material/Button';
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 import BoardUserGroup from './BoardUserGroup';
+import InviteBoardUser from './InviteBoardUser';
 
 import { capitalizeFirstLetter } from '~/utils/formatters'
 
@@ -99,18 +100,7 @@ function BoardBar({ board }) {
           gap: 2
         }
       }>
-        <Button
-          variant="outlined" startIcon={<PersonAddAlt1Icon />}
-          sx={
-            {
-              color: 'white',
-              borderColor: 'white',
-              '&:hover': { borderColor: 'white' },
-            }
-          }
-        >
-            Invite
-        </Button>
+        <InviteBoardUser boardId={board?._id} />
         <BoardUserGroup boardUsers={board?.FE_allUsers} />
       </Box>
     </Box>

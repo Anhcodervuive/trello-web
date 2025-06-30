@@ -35,7 +35,7 @@ import CardActivitySection from './CardActivitySection'
 
 import { styled } from '@mui/material/styles'
 import { useDispatch, useSelector } from 'react-redux'
-import { clearCurrentActiveCard, selectCurrentActiveCard, updateCurrentActiveCard } from '~/redux/activeCard/activeCardSlice'
+import { clearAndHideCurrentActiveCard, selectCurrentActiveCard, selectIsShowModalActiveCard, updateCurrentActiveCard } from '~/redux/activeCard/activeCardSlice'
 import { updateCardDetailsAPI } from '~/apis'
 import { updateCardInBoard } from '~/redux/activeBoard/activeBoardSlice'
 const SidebarItem = styled(Box)(({ theme }) => ({
@@ -64,12 +64,11 @@ const SidebarItem = styled(Box)(({ theme }) => ({
  * nhưng sẽ sử dụng Modal để dễ linh hoạt tùy biến giao diện từ con số 0 cho phù hợp với mọi nhu cầu nhé.
  */
 function ActiveCard() {
-  // const [isOpen, setIsOpen] = useState(true)
-  // const handleOpenModal = () => setIsOpen(true)
   const dispatch = useDispatch()
   const activeCard = useSelector(selectCurrentActiveCard)
+  const isShowModalActiveCard = useSelector(selectIsShowModalActiveCard)
   const handleCloseModal = () => {
-    dispatch(clearCurrentActiveCard())
+    dispatch(clearAndHideCurrentActiveCard())
   }
 
   const callApiUpdateCard = async (updateData) => {
@@ -83,13 +82,10 @@ function ActiveCard() {
   }
 
   const onUpdateCardTitle = (newTitle) => {
-    console.log(newTitle.trim())
-    // Gọi API...
     callApiUpdateCard({ title: newTitle.trim() })
   }
 
   const onUploadCardCover = (event) => {
-    console.log(event.target?.files[0])
     const error = singleFileValidator(event.target?.files[0])
     if (error) {
       toast.error(error)
@@ -104,14 +100,18 @@ function ActiveCard() {
     )
   }
 
-  const onUpdateCardDescription = (newDescription) => {
-    callApiUpdateCard({ description: newDescription })
+  const onAddCardComment = (commentToAdd) => {
+    callApiUpdateCard({ commentToAdd })
+  }
+
+  const onUpdateCardDescription = async (newDescription) => {
+    await callApiUpdateCard({ description: newDescription })
   }
 
   return (
     <Modal
       disableScrollLock
-      open={true}
+      open={isShowModalActiveCard}
       onClose={handleCloseModal} // Sử dụng onClose trong trường hợp muốn đóng Modal bằng nút ESC hoặc click ra ngoài Modal
       sx={{ overflowY: 'auto' }}>
       <Box sx={{
@@ -186,7 +186,7 @@ function ActiveCard() {
               </Box>
 
               {/* Feature 04: Xử lý các hành động, ví dụ comment vào Card */}
-              <CardActivitySection />
+              <CardActivitySection cardComments={activeCard?.comments} onAddCardComment={onAddCardComment} />
             </Box>
           </Grid>
 

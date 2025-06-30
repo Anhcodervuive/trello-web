@@ -44,7 +44,6 @@ const activeBoardSlice = createSlice({
         let card = column.cards.find(c => c._id === incomingCard._id)
         if (card) {
           Object.keys(incomingCard).forEach(key => {
-            console.log(incomingCard[key]);
             card[key] = incomingCard[key]
           })
         }
