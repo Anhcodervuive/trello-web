@@ -28,10 +28,11 @@ const persistor = persistStore(store)
 import App from './App.jsx'
 import theme from './theme.jsx'
 
+
 createRoot(document.getElementById('root')).render(
-  <BrowserRouter basename='/'>
-    <Provider store={store}>
-      <PersistGate persistor={persistor}>
+  <Provider store={store}>
+    <PersistGate persistor={persistor}>
+      <BrowserRouter basename='/'>
         <CssVarsProvider theme={theme}>
           {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
           <ConfirmProvider defaultOptions={{
@@ -45,7 +46,7 @@ createRoot(document.getElementById('root')).render(
             <ToastContainer />
           </ConfirmProvider>
         </CssVarsProvider>
-      </PersistGate>
-    </Provider>
-  </BrowserRouter>
+      </BrowserRouter>
+    </PersistGate>
+  </Provider>
 )

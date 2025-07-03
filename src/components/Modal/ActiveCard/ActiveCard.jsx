@@ -31,6 +31,7 @@ import { toast } from 'react-toastify'
 import CardUserGroup from './CardUserGroup'
 import CardDescriptionMdEditor from './CardDescriptionMdEditor'
 import CardActivitySection from './CardActivitySection'
+import ExitToAppIcon from '@mui/icons-material/ExitToApp'
 
 
 import { styled } from '@mui/material/styles'
@@ -38,6 +39,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { clearAndHideCurrentActiveCard, selectCurrentActiveCard, selectIsShowModalActiveCard, updateCurrentActiveCard } from '~/redux/activeCard/activeCardSlice'
 import { updateCardDetailsAPI } from '~/apis'
 import { updateCardInBoard } from '~/redux/activeBoard/activeBoardSlice'
+import { selectCurrentUser } from '~/redux/user/userSlice'
+import { CARD_MEMBER_ACTIONS } from '~/utils/contants'
 const SidebarItem = styled(Box)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
@@ -66,6 +69,7 @@ const SidebarItem = styled(Box)(({ theme }) => ({
 function ActiveCard() {
   const dispatch = useDispatch()
   const activeCard = useSelector(selectCurrentActiveCard)
+  const user = useSelector(selectCurrentUser)
   const isShowModalActiveCard = useSelector(selectIsShowModalActiveCard)
   const handleCloseModal = () => {
     dispatch(clearAndHideCurrentActiveCard())
@@ -106,6 +110,10 @@ function ActiveCard() {
 
   const onUpdateCardDescription = async (newDescription) => {
     await callApiUpdateCard({ description: newDescription })
+  }
+
+  const onUpdateCardMember = (incomingMemberInfo) => {
+    callApiUpdateCard({ incomingMemberInfo })
   }
 
   return (
@@ -163,7 +171,10 @@ function ActiveCard() {
               <Typography sx={{ fontWeight: '600', color: 'primary.main', mb: 1 }}>Members</Typography>
 
               {/* Feature 02: Xử lý các thành viên của Card */}
-              <CardUserGroup />
+              <CardUserGroup
+                cardMemberIds={activeCard?.memberIds}
+                onUpdateCardMembers={onUpdateCardMember}
+              />
             </Box>
 
             <Box sx={{ mb: 3 }}>
@@ -195,10 +206,30 @@ function ActiveCard() {
             <Typography sx={{ fontWeight: '600', color: 'primary.main', mb: 1 }}>Add To Card</Typography>
             <Stack direction="column" spacing={1}>
               {/* Feature 05: Xử lý hành động bản thân user tự join vào card */}
-              <SidebarItem className="active">
-                <PersonOutlineOutlinedIcon fontSize="small" />
-                Join
-              </SidebarItem>
+              {!activeCard?.memberIds?.includes(user._id)
+                ? (
+                  <SidebarItem
+                    className="active"
+                    onClick={() => onUpdateCardMember({
+                      action: CARD_MEMBER_ACTIONS.ADD,
+                      userId: user?._id
+                    })}
+                  >
+                    <PersonOutlineOutlinedIcon fontSize="small" />
+                  Join
+                  </SidebarItem>)
+                : (
+                  <SidebarItem
+                    className="active"
+                    onClick={() => onUpdateCardMember({
+                      action: CARD_MEMBER_ACTIONS.REMOVE,
+                      userId: user?._id
+                    })}
+                  >
+                    <ExitToAppIcon fontSize="small" />
+                  Leave
+                  </SidebarItem>)
+              }
               {/* Feature 06: Xử lý hành động cập nhật ảnh Cover của Card */}
               <SidebarItem className="active" component="label">
                 <ImageOutlinedIcon fontSize="small" />

@@ -97,29 +97,28 @@ function Column({ column }) {
   }
 
   const handleDeleteColumn = async () => {
-    confirmDeleteColumn({
+    const { confirmed } = await confirmDeleteColumn({
       description: 'This action will permanently delete your Column and its card! Are you sure?',
       title: 'Delete column',
       confirmationButtonProps: { color: 'error' },
     })
-      .then(() => {
-        // Cập nhật lại chuẩn dữ liệu state board
+    if (confirmed) {
+      // Cập nhật lại chuẩn dữ liệu state board
 
-        const newBoard = cloneDeep(board)
-        newBoard.columns = newBoard.columns.filter(c => c._id !== column._id)
-        newBoard.columnOrderIds = newBoard.columnOrderIds.filter(id => id !== column._id)
-        dispatch(updateCurrentActiveBoard(newBoard))
+      const newBoard = cloneDeep(board)
+      newBoard.columns = newBoard.columns.filter(c => c._id !== column._id)
+      newBoard.columnOrderIds = newBoard.columnOrderIds.filter(id => id !== column._id)
+      dispatch(updateCurrentActiveBoard(newBoard))
 
-        deleteColumnDetailsAPI(column._id)
-          .then(res => {
-            console.log(res);
-            toast.success(res?.deleteResult)
-          })
-          .catch(err => {
-            console.log(err);
-          })
-      })
-      .catch(() => {});
+      deleteColumnDetailsAPI(column._id)
+        .then(res => {
+          console.log(res);
+          toast.success(res?.deleteResult)
+        })
+        .catch(err => {
+          console.log(err);
+        })
+    }
   }
 
   const onUpdateColumnTitle = (newTitle) => {
